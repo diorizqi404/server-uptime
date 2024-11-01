@@ -4,8 +4,8 @@ const axios = require("axios");
 const nodemailer = require("nodemailer");
 
 const server = Hapi.server({
-  port: process.env.SERVER_PORT,
-  host: process.env.SERVER_HOST,
+  port: process.env.SERVER_PORT || process.env.PORT,
+  host: process.env.SERVER_HOST || process.env.HOST,
   routes: {
     cors: {
       origin: ['*'],
@@ -13,7 +13,7 @@ const server = Hapi.server({
   },
 });
 
-const urls = [];
+const urls = ["https://kirimaja.dioo.my.id", "https://s.dioo.my.id", "https://no-dev.netlify.app", "https://dioo.my.id"];
 const recipient = process.env.RECIPIENT_EMAIL;
 const urlStatus = {}
 
@@ -76,7 +76,7 @@ setInterval(checkUptime, 30000);
 
 server.route({
   method: "GET",
-  path: "/status",
+  path: "/",
   handler: (request, h) => {
     return urlStatus;
   },
