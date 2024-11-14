@@ -13,7 +13,7 @@ const server = Hapi.server({
   },
 });
 
-const urls = ["https://kirimaja.dioo.my.id", "https://s.dioo.my.id", "https://no-dev.netlify.app", "https://dioo.my.id"];
+const urls = ["https://kirimaja.dioo.my.id", "https://s.dioo.my.id", "https://no-dev.netlify.app"];
 const recipient = process.env.RECIPIENT_EMAIL || 'dev404.intern@gmail.com';
 const urlStatus = {}
 
