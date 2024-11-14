@@ -49,4 +49,16 @@ if ! command -v pm2 &> /dev/null; then
     npm install -g pm2
 fi
 
-# Stop any existing PM2
+# Stop any existing PM2 process running the app
+if pm2 list | grep -q "app"; then
+    pm2 stop app
+    pm2 delete app
+fi
+
+# Start the app with PM2 and set it to restart on server reboot
+pm2 start /home/ec2-user/app/index.js --name "app"
+pm2 startup
+pm2 save
+
+# Print PM2 status
+pm2 status

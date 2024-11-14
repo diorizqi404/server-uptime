@@ -1,4 +1,4 @@
-let url = 'http://localhost:3000'
+let url = 'http://0.0.0.0:3000'
 
 function fetchWebStatus() {
     fetch(url)
