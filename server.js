@@ -13,7 +13,7 @@ const server = Hapi.server({
   },
 });
 
-const urls = ["https://kirimaja.dioo.my.id"];
+const urls = ["https://kirimja.dioo.my.id"];
 const recipient = process.env.RECIPIENT_EMAIL || 'dev404.intern@gmail.com';
 const urlStatus = {}
 
