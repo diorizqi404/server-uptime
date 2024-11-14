@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "prod": "nodemon server.js",
     "start": "node server.js"
@@ -11,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.691.0",
     "@hapi/hapi": "^21.3.10",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",

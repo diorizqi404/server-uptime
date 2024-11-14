@@ -2,18 +2,18 @@ import dotenv from 'dotenv';
 import Hapi from '@hapi/hapi';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
-import AWS from 'aws-sdk';
+import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 
 dotenv.config();
 
-const ssm = new AWS.SSM();
+const ssmClient = new SSMClient({ region: 'us-east-1' }); // Ganti dengan region yang sesuai
 
 async function getParameter(name) {
-  const params = {
+  const command = new GetParameterCommand({
       Name: name,
       WithDecryption: false
-  };
-  const data = await ssm.getParameter(params).promise();
+  });
+  const data = await ssmClient.send(command);
   return data.Parameter.Value;
 }
 
