@@ -40,6 +40,9 @@ echo "NPM version: $(npm --version)"
 # Navigate to app directory
 cd /home/ec2-user/app
 
+# Set the environment variable for the server port
+export SERVER_PORT=3000
+
 # Install dependencies
 npm install
 
@@ -55,10 +58,10 @@ if pm2 list | grep -q "app"; then
     pm2 delete app
 fi
 
-# Start the app with PM2 and set it to restart on server reboot
-pm2 start /home/ec2-user/app/index.js --name "app"
+# Start the app with PM2 on port 3000 and set it to restart on server reboot
+pm2 start index.js --name "app" --watch --time -- -p $SERVER_PORT
 pm2 startup
 pm2 save
 
-# Print PM2 status
+# Print PM2 status to verify
 pm2 status
