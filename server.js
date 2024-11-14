@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 
 const server = Hapi.server({
   port: process.env.SERVER_PORT || 3000,
-  host: process.env.SERVER_HOST || '0.0.0.0',
+  host: process.env.SERVER_HOST || 'localhost',
   routes: {
     cors: {
       origin: ['*'],
