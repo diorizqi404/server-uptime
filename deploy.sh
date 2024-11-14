@@ -63,10 +63,3 @@ echo "Starting the app with PM2..."
 pm2 start index.js --name "app" --watch --time -i max -- -p $SERVER_PORT
 pm2 startup
 pm2 save
-
-# Print PM2 status to verify
-echo "PM2 status after starting the app:"
-pm2 status
-
-# Ensure PM2 logs are visible for debugging
-pm2 logs --lines 100
