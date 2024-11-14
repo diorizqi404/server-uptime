@@ -2,17 +2,37 @@ require("dotenv").config();
 const Hapi = require("@hapi/hapi");
 const axios = require("axios");
 const nodemailer = require("nodemailer");
+const AWS = require("aws-sdk");
 
-const server = Hapi.server({
-  port: process.env.SERVER_PORT || 3000,
-  host: process.env.SERVER_HOST || '0.0.0.0',
-  routes: {
-    cors: {
-      origin: ['*'],
-    },
-  },
-});
+const ssm = new AWS.SSM();
 
+async function getParameter(name) {
+  const params = {
+      Name: name,
+      WithDecryption: false
+  };
+  const data = await ssm.getParameter(params).promise();
+  return data.Parameter.Value;
+}
+
+async function setupServer() {
+  const serverPort = process.env.SERVER_PORT || await getParameter("SERVER_PORT");
+  const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_HOST");
+
+  const server = Hapi.server({
+      port: serverPort,
+      host: serverHost,
+      routes: {
+          cors: {
+              origin: ['*'],
+          },
+      },
+  });
+
+  return server;
+}
+
+const server = await setupServer();
 const urls = ["https://kirimja.dioo.my.id"];
 const recipient = process.env.RECIPIENT_EMAIL || 'dev404.intern@gmail.com';
 const urlStatus = {}
