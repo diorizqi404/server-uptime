@@ -58,10 +58,15 @@ if pm2 list | grep -q "app"; then
     pm2 delete app
 fi
 
-# Start the app with PM2 on port 3000 and set it to restart on server reboot
-pm2 start index.js --name "app" --watch --time -- -p $SERVER_PORT
+# Start the app with PM2 on port 3000
+echo "Starting the app with PM2..."
+pm2 start index.js --name "app" --watch --time -i max -- -p $SERVER_PORT
 pm2 startup
 pm2 save
 
 # Print PM2 status to verify
+echo "PM2 status after starting the app:"
 pm2 status
+
+# Ensure PM2 logs are visible for debugging
+pm2 logs --lines 100
