@@ -1,5 +1,7 @@
+let url = 'http://localhost:3000'
+
 function fetchWebStatus() {
-    fetch('http://localhost:3000/status')
+    fetch(url)
     .then(response => response.json())
     .then(data => {
         const tableBody = document.getElementById('web-status-table')

@@ -71,7 +71,7 @@ async function checkUptime() {
   }
 }
 
-
+checkUptime()
 setInterval(checkUptime, 30000);
 
 server.route({
