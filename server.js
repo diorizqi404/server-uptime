@@ -1,8 +1,10 @@
-require("dotenv").config();
-const Hapi = require("@hapi/hapi");
-const axios = require("axios");
-const nodemailer = require("nodemailer");
-const AWS = require("aws-sdk");
+import dotenv from 'dotenv';
+import Hapi from '@hapi/hapi';
+import axios from 'axios';
+import nodemailer from 'nodemailer';
+import AWS from 'aws-sdk';
+
+dotenv.config();
 
 const ssm = new AWS.SSM();
 
