@@ -4,8 +4,8 @@ const axios = require("axios");
 const nodemailer = require("nodemailer");
 
 const server = Hapi.server({
-  port: process.env.SERVER_PORT || process.env.PORT,
-  host: process.env.SERVER_HOST || process.env.HOST,
+  port: process.env.SERVER_PORT || 3000,
+  host: process.env.SERVER_HOST || '0.0.0.0',
   routes: {
     cors: {
       origin: ['*'],
@@ -14,22 +14,22 @@ const server = Hapi.server({
 });
 
 const urls = ["https://kirimaja.dioo.my.id", "https://s.dioo.my.id", "https://no-dev.netlify.app", "https://dioo.my.id"];
-const recipient = process.env.RECIPIENT_EMAIL;
+const recipient = process.env.RECIPIENT_EMAIL || 'dev404.intern@gmail.com';
 const urlStatus = {}
 
 const mailSender = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: process.env.SMTP_PORT || 465,
   secure: true,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER || 'cloudiooproject@gmail.com',
+    pass: process.env.EMAIL_PASS || 'isthkxsejblaqnij',
   },
 });
 
 function sendNotification(url, status) {
   const message = {
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_USER || 'cloudiooproject@gmail.com',
     to: recipient,
     subject: "UPTIME ALERT❗❗❗",
     text: `${url} is ${status}!`,
