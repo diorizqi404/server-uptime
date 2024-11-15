@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import fs from 'fs';
 import Hapi from '@hapi/hapi';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
+
+dotenv.config();
 
 function getPublicIp() {
   const data = fs.readFileSync('public_ip.config', 'utf8');
@@ -25,7 +28,7 @@ async function getParameter(name) {
 
 async function setupServer() {
   const serverPort = process.env.SERVER_PORT || await getParameter("SERVER_PORT");
-  const serverHost = process.env.SERVER_HOST || 'localhost';
+  const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_PORT");
 
   return Hapi.server({
       port: serverPort,
