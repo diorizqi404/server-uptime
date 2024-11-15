@@ -21,7 +21,7 @@ async function setupServer() {
   const serverPort = process.env.SERVER_PORT || await getParameter("SERVER_PORT");
   const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_HOST");
 
-  const server = Hapi.server({
+  return Hapi.server({
       port: serverPort,
       host: serverHost,
       routes: {
@@ -30,28 +30,34 @@ async function setupServer() {
           },
       },
   });
+}
 
-  return server;
+async function setupMailSender() {
+  const smtpHost = process.env.SMTP_HOST || await getParameter("SMTP_HOST");
+  const smtpPort = process.env.SMTP_PORT || await getParameter("SMTP_PORT");
+  const emailUser = process.env.EMAIL_USER || await getParameter("EMAIL_USER");
+  const emailPass = process.env.EMAIL_PASS || await getParameter("EMAIL_PASS");
+
+  return nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: true,
+      auth: {
+          user: emailUser,
+          pass: emailPass,
+      },
+  });
 }
 
 const server = await setupServer();
+const mailSender = await setupMailSender();
 const urls = ["https://kirimja.dioo.my.id"];
-const recipient = process.env.RECIPIENT_EMAIL || 'dev404.intern@gmail.com';
+const recipient = process.env.RECIPIENT_EMAIL || await getParameter("RECIPIENT_EMAIL");
 const urlStatus = {}
 
-const mailSender = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER || 'cloudiooproject@gmail.com',
-    pass: process.env.EMAIL_PASS || 'isthkxsejblaqnij',
-  },
-});
-
-function sendNotification(url, status) {
+async function sendNotification(url, status) {
   const message = {
-    from: process.env.EMAIL_USER || 'cloudiooproject@gmail.com',
+    from: process.env.EMAIL_USER || await getParameter("RECIPIENT_EMAIL"),
     to: recipient,
     subject: "UPTIME ALERT❗❗❗",
     text: `${url} is ${status}!`,
