@@ -1,11 +1,8 @@
-import dotenv from 'dotenv';
 import fs from 'fs';
 import Hapi from '@hapi/hapi';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
-
-dotenv.config();
 
 function getPublicIp() {
   const data = fs.readFileSync('public_ip.config', 'utf8');
