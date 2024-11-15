@@ -28,7 +28,7 @@ async function getParameter(name) {
 
 async function setupServer() {
   const serverPort = process.env.SERVER_PORT || await getParameter("SERVER_PORT");
-  const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_PORT");
+  const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_HOST");
 
   return Hapi.server({
       port: serverPort,
