@@ -1,17 +1,6 @@
-const fs = require('fs')
-const path = require('path')
+import { publicIp } from './server.js';
 
-const IPConfigPath = path.join(__dirname, 'public_ip.config')
-let publicIP = 'localhost'
-
-try {
-    const IPConfig = fs.readFileSync(IPConfigPath, 'utf8')
-    publicIP = IPConfig.split('=')[1].trim()
-} catch (e) {
-    console.error('Error reading public IP config', e)
-}
-
-const url = `http://${publicIP}:3000`
+let url = `http://${publicIP}:3000`
 
 function fetchWebStatus() {
     fetch(url)
