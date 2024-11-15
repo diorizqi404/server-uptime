@@ -1,19 +1,7 @@
-import dotenv from 'dotenv';
-import fs from 'fs';
 import Hapi from '@hapi/hapi';
 import axios from 'axios';
 import nodemailer from 'nodemailer';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
-
-dotenv.config();
-
-function getPublicIp() {
-  const data = fs.readFileSync('public_ip.config', 'utf8');
-  const match = data.match(/PUBLIC_IP=(.*)/);
-  return match ? match[1] : null;
-}
-
-export const publicIp = getPublicIp(); // Menyimpan IP dalam variabel
 
 const ssmClient = new SSMClient({ region: 'us-east-1' }); // Ganti dengan region yang sesuai
 
@@ -27,8 +15,8 @@ async function getParameter(name) {
 }
 
 async function setupServer() {
-  const serverPort = process.env.SERVER_PORT || await getParameter("SERVER_PORT");
-  const serverHost = process.env.SERVER_HOST || await getParameter("SERVER_HOST");
+  const serverPort = await getParameter("SERVER_PORT");
+  const serverHost = await getParameter("SERVER_HOST");
 
   return Hapi.server({
       port: serverPort,
@@ -42,10 +30,10 @@ async function setupServer() {
 }
 
 async function setupMailSender() {
-  const smtpHost = process.env.SMTP_HOST || await getParameter("SMTP_HOST");
-  const smtpPort = process.env.SMTP_PORT || await getParameter("SMTP_PORT");
-  const emailUser = process.env.EMAIL_USER || await getParameter("EMAIL_USER");
-  const emailPass = process.env.EMAIL_PASS || await getParameter("EMAIL_PASS");
+  const smtpHost = await getParameter("SMTP_HOST");
+  const smtpPort = await getParameter("SMTP_PORT");
+  const emailUser = await getParameter("EMAIL_USER");
+  const emailPass = await getParameter("EMAIL_PASS");
 
   return nodemailer.createTransport({
       host: smtpHost,
@@ -61,12 +49,12 @@ async function setupMailSender() {
 const server = await setupServer();
 const mailSender = await setupMailSender();
 const urls = ["https://kirimja.dioo.my.id"];
-const recipient = process.env.RECIPIENT_EMAIL || await getParameter("RECIPIENT_EMAIL");
+const recipient = await getParameter("RECIPIENT_EMAIL");
 const urlStatus = {}
 
 async function sendNotification(url, status) {
   const message = {
-    from: process.env.EMAIL_USER || await getParameter("RECIPIENT_EMAIL"),
+    from: await getParameter("RECIPIENT_EMAIL"),
     to: recipient,
     subject: "UPTIME ALERT❗❗❗",
     text: `${url} is ${status}!`,

@@ -1,3 +1,4 @@
 node_modules/
-deploy.zip
 .env/
+index.html
+script.js
