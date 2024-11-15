@@ -48,7 +48,7 @@ async function setupMailSender() {
 
 const server = await setupServer();
 const mailSender = await setupMailSender();
-const urls = ["https://kirimja.dioo.my.id", "https://dioo.my.id"];
+const urls = ["https://kirimja.dioo.my.id"];
 const recipient = await getParameter("RECIPIENT_EMAIL");
 const urlStatus = {}
 
