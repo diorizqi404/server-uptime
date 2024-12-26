@@ -3,7 +3,7 @@ import axios from 'axios';
 import nodemailer from 'nodemailer';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 
-const ssmClient = new SSMClient({ region: 'us-east-1' }); // Ganti dengan region yang sesuai
+const ssmClient = new SSMClient({ region: 'ap-southeast-1' }); // Ganti dengan region yang sesuai
 
 async function getParameter(name) {
   const command = new GetParameterCommand({
